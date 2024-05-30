@@ -51,6 +51,15 @@ public static partial class RestClientExtensions {
         => AsyncHelpers.RunSync(() => client.ExecuteAsync<T>(request));
 
     /// <summary>
+    /// Executes the request synchronously, authenticating if needed
+    /// </summary>
+    /// <typeparam name="T">Target deserialization type</typeparam>
+    /// <param name="client"></param>
+    /// <param name="request">Request to be executed</param>
+    public static RestResponse Execute(this IRestClient client, RestRequest request)
+        => AsyncHelpers.RunSync(() => client.ExecuteAsync(request));
+
+    /// <summary>
     /// Executes the request asynchronously, authenticating if needed
     /// </summary>
     /// <param name="client"></param>
