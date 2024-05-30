@@ -53,7 +53,6 @@ public static partial class RestClientExtensions {
     /// <summary>
     /// Executes the request synchronously, authenticating if needed
     /// </summary>
-    /// <typeparam name="T">Target deserialization type</typeparam>
     /// <param name="client"></param>
     /// <param name="request">Request to be executed</param>
     public static RestResponse Execute(this IRestClient client, RestRequest request)
