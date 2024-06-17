@@ -56,17 +56,19 @@ public class ImmutableGenerator : ISourceGenerator {
                                 }
                             """;
 
-        const string template = @"{Usings}
+        const string template = """
+                                {Usings}
 
-namespace {Namespace};
+                                namespace {Namespace};
 
-public partial class ReadOnly{ClassName} {
-{Constructor}
+                                public partial class ReadOnly{ClassName} {
+                                {Constructor}
+                                
+                                    partial void CopyAdditionalProperties({ClassName} {ArgName}); 
 
-    partial void CopyAdditionalProperties({ClassName} {ArgName}); 
-
-{Properties}
-}";
+                                {Properties}
+                                }
+                                """;
 
         var code = template
             .Replace("{Usings}", string.Join("\n", usings))
