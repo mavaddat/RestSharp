@@ -14,6 +14,7 @@
 
 using System.Diagnostics;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace RestSharp;
 
