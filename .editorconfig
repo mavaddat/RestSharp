@@ -57,6 +57,8 @@ dotnet_style_qualification_for_field = false:suggestion
 dotnet_style_qualification_for_method = false:suggestion
 dotnet_style_qualification_for_property = false:suggestion
 dotnet_style_require_accessibility_modifiers = never:suggestion
+object_creation_when_type_evident = target_typed
+object_creation_when_type_not_evident = target_typed
 
 # ReSharper inspection severities
 resharper_arrange_redundant_parentheses_highlighting = hint

@@ -10,7 +10,22 @@ This changelog is only maintained since v111. For release notes of previous vers
 
 Only the most important or breaking changes are listed there. All other changes can be found in each release on GitHub.
 
-## v111
+## v111.3
+
+New extensions:
+* `RestResponse.GetHeader` for getting one response header value
+* `RestResponse.GetHeaders` for getting a collection of header values
+* `IRestClient.(Execute)Get(Async)` with string resource instead of request object
+* `IRestClient.(Execute)Delete(Async)` with string resource instead of request object
+
+## v111.2
+
+* `Execute` extensions that were accidentally removed from v111 are back
+* Several authenticators got renamed by unintentional refactoring, that change has also been reverted.
+
+## v111.0
+
+> The package for v111.0 is listed as unsupported on NuGet as it has API changes that weren't planned. Use the patched version v111.2 or later.
 
 * Added [interceptors](advanced/interceptors.md).
 * As interceptors provide a better way to interject the request and response execution flow, request properties `OnBeforeRequest`, `OnBeforeDeserialization` and `OnAfterRequest` are marked obsolete and will be removed in future versions.

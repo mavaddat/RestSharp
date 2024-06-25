@@ -62,9 +62,7 @@ public class RestRequest {
                     x => {
                         var position = x.IndexOf('=');
 
-                        return position > 0
-                            ? new KeyValuePair<string, string?>(x[..position], x[(position + 1)..])
-                            : new KeyValuePair<string, string?>(x, null);
+                        return position > 0 ? new KeyValuePair<string, string?>(x[..position], x[(position + 1)..]) : new(x, null);
                     }
                 );
     }
