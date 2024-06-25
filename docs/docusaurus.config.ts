@@ -14,6 +14,19 @@ const config: Config = {
         defaultLocale: "en",
         locales: ["en"],
     },
+    plugins: [
+        [
+            '@docusaurus/plugin-client-redirects',
+            {
+                redirects: [
+                    {
+                        from: '/v107',
+                        to: '/migration',
+                    },
+                ],
+            },
+        ],
+    ],
 
     presets: [[
         "classic", {
