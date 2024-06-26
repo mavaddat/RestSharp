@@ -1,7 +1,7 @@
 ---
 title: What's new
 description: List of changes for the current major version
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Changelog
