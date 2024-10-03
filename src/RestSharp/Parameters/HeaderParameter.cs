@@ -53,7 +53,6 @@ public partial record HeaderParameter : Parameter {
         // ReSharper disable once ForCanBeConvertedToForeach
         for (var i = 0; i < stringValue.Length; i++) {
             switch (stringValue[i]) {
-                case '\t':
                 case '\r':
                 case '\n':
                     return true;
