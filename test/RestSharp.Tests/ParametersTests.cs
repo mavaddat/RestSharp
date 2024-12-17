@@ -63,4 +63,28 @@ public class ParametersTests {
 
         expected.Should().BeEquivalentTo(actual);
     }
+
+    [Theory]
+    [InlineData("bar%2fBAR")]
+    [InlineData("bar%2FBAR")]
+    public void UrlSegmentParameter_WithValueWithEncodedSlash_WillReplaceEncodedSlashByDefault(string inputValue) {
+        var urlSegmentParameter = new UrlSegmentParameter("foo", inputValue);
+        urlSegmentParameter.Value.Should().BeEquivalentTo("bar/BAR");
+    }
+    
+    [Theory]
+    [InlineData("bar%2fBAR")]
+    [InlineData("bar%2FBAR")]
+    public void UrlSegmentParameter_WithValueWithEncodedSlash_CanReplaceEncodedSlash(string inputValue) {
+        var urlSegmentParameter = new UrlSegmentParameter("foo", inputValue, replaceEncodedSlash: true);
+        urlSegmentParameter.Value.Should().BeEquivalentTo("bar/BAR");
+    }
+    
+    [Theory]
+    [InlineData("bar%2fBAR")]
+    [InlineData("bar%2FBAR")]
+    public void UrlSegmentParameter_WithValueWithEncodedSlash_CanLeaveEncodedSlash(string inputValue) {
+        var urlSegmentParameter = new UrlSegmentParameter("foo", inputValue, replaceEncodedSlash: false);
+        urlSegmentParameter.Value.Should().BeEquivalentTo(inputValue);
+    }
 }
