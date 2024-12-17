@@ -20,8 +20,13 @@ namespace RestSharp;
 [PublicAPI]
 public static partial class RestClientExtensions {
     [PublicAPI]
+    [Obsolete("Please use the async overload with a cancellation token")]
     public static RestResponse<T> Deserialize<T>(this IRestClient client, RestResponse response)
-        => client.Serializers.Deserialize<T>(response.Request, response, client.Options);
+        => AsyncHelpers.RunSync(() => client.Serializers.Deserialize<T>(response.Request, response, client.Options, CancellationToken.None).AsTask());
+
+    [PublicAPI]
+    public static ValueTask<RestResponse<T>> Deserialize<T>(this IRestClient client, RestResponse response, CancellationToken cancellationToken)    
+        => client.Serializers.Deserialize<T>(response.Request, response, client.Options, cancellationToken);
 
     /// <summary>
     /// Executes the request asynchronously, authenticating if needed
@@ -35,22 +40,10 @@ public static partial class RestClientExtensions {
         RestRequest       request,
         CancellationToken cancellationToken = default
     ) {
-        if (request == null) throw new ArgumentNullException(nameof(request));
+        Ensure.NotNull(request, nameof(request));
 
         var response = await client.ExecuteAsync(request, cancellationToken).ConfigureAwait(false);
-        await OnBeforeDeserialization(response, client.Options).ConfigureAwait(false);
-        return client.Serializers.Deserialize<T>(request, response, client.Options);
-    }
-    
-    /// <summary>
-    /// Will be called before the Data will be serialized
-    /// </summary>
-    /// <param name="raw">RestResponse with Data still in Content</param>
-    /// <param name="options">RestClient options but readonly</param>
-    static async Task OnBeforeDeserialization(RestResponse raw, ReadOnlyRestClientOptions options) {
-        foreach (var interceptor in options.Interceptors) {
-            await interceptor.InterceptBeforeDeserialize(raw);
-        }
+        return await client.Serializers.Deserialize<T>(request, response, client.Options, cancellationToken);
     }
 
     /// <summary>
@@ -61,6 +54,14 @@ public static partial class RestClientExtensions {
     /// <param name="request">Request to be executed</param>
     public static RestResponse<T> Execute<T>(this IRestClient client, RestRequest request)
         => AsyncHelpers.RunSync(() => client.ExecuteAsync<T>(request));
+
+    /// <summary>
+    /// Executes the request synchronously, authenticating if needed
+    /// </summary>
+    /// <param name="client"></param>
+    /// <param name="request">Request to be executed</param>
+    public static RestResponse Execute(this IRestClient client, RestRequest request)
+        => AsyncHelpers.RunSync(() => client.ExecuteAsync(request));
 
     /// <summary>
     /// Executes the request asynchronously, authenticating if needed
@@ -185,7 +186,7 @@ public static partial class RestClientExtensions {
         using var reader = new StreamReader(stream);
 
         while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested) {
-#if NET7_0
+#if NET7_0_OR_GREATER
             var line = await reader.ReadLineAsync(cancellationToken).ConfigureAwait(false);
 #else
             var line = await reader.ReadLineAsync().ConfigureAwait(false);

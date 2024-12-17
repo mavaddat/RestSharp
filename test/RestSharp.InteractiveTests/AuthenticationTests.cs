@@ -15,7 +15,7 @@ public class AuthenticationTests {
 
         var baseUrl = new Uri("https://api.twitter.com");
 
-        var client = new RestClient(
+        using var client = new RestClient(
             baseUrl,
             options =>
                 options.Authenticator = OAuth1Authenticator.ForRequestToken(
